@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = False
 
 # SECURITY WARNING: set DEBUG = False in production!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-in-prod')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')  # Restrict this in production, e.g. ['yourdomain.com']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')  # Restrict this in production, e.g. ['yourdomain.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,7 +64,7 @@ WSGI_APPLICATION = 'exam_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/data/db.sqlite3' if os.environ.get('RAILWAY_ENVIRONMENT') else BASE_DIR / 'db.sqlite3',
     }
 }
 
