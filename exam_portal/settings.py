@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = False
 
 # SECURITY WARNING: set DEBUG = False in production!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-local-dev-key-change-in-prod')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')  # Restrict this in production, e.g. ['yourdomain.com']
+ALLOWED_HOSTS = ['*']  # Restrict this in production, e.g. ['yourdomain.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -83,7 +83,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
