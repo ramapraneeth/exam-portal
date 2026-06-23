@@ -81,6 +81,13 @@ def test_instructions(request, test_id):
 def start_test(request, test_id):
     test = get_object_or_404(Test, id=test_id, is_active=True)
 
+    # Ensure the user has a CandidateProfile
+    try:
+        candidate_profile = request.user.candidate_profile
+    except CandidateProfile.DoesNotExist:
+        messages.error(request, "Your candidate profile is not set up. Please contact the administrator.")
+        return redirect('test_list')
+
     # Reuse an in-progress attempt if one exists, else create a new one
     attempt = TestAttempt.objects.filter(
         candidate=request.user, test=test, status='IN_PROGRESS'
@@ -116,7 +123,11 @@ def take_test(request, attempt_id):
     test = attempt.test
     sections = test.sections.select_related('subject').prefetch_related('questions__choices')
 
-    candidate_profile = getattr(request.user, 'candidate_profile', None)
+    # Safe profile access - handle case where profile doesn't exist
+    try:
+        candidate_profile = request.user.candidate_profile
+    except CandidateProfile.DoesNotExist:
+        candidate_profile = None
 
     return render(request, 'exams/take_test.html', {
         'attempt': attempt,
