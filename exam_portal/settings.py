@@ -9,7 +9,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: change this before deploying to production!
-DEBUG = False
+DEBUG = True
 
 # SECURITY WARNING: set DEBUG = False in production!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
