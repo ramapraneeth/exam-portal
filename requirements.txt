@@ -1,6 +1,6 @@
-Django
-Pillow
-gunicorn
-whitenoise
-django-cloudinary-storage
-cloudinary
+Django==5.0.6
+Pillow==10.3.0
+gunicorn==22.0.0
+whitenoise==6.7.0
+django-cloudinary-storage==0.3.0
+cloudinary==1.40.0
