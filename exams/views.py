@@ -35,10 +35,16 @@ def candidate_login(request):
 
         user = authenticate(request, username=candidate_id, password=password)
         if user is not None:
-            login(request, user)
-            return redirect('test_list')
+            # Check if user has a CandidateProfile - only then allow login
+            try:
+                candidate_profile = user.candidate_profile
+                login(request, user)
+                return redirect('test_list')
+            except CandidateProfile.DoesNotExist:
+                # User exists but no profile - reject login
+                error = "Enter correct login details"
         else:
-            error = "Invalid Candidate ID or Password. Please try again."
+            error = "Enter correct login details"
 
     return render(request, 'exams/login.html', {
         'form': form,
@@ -80,13 +86,6 @@ def test_instructions(request, test_id):
 @login_required
 def start_test(request, test_id):
     test = get_object_or_404(Test, id=test_id, is_active=True)
-
-    # Ensure the user has a CandidateProfile
-    try:
-        candidate_profile = request.user.candidate_profile
-    except CandidateProfile.DoesNotExist:
-        messages.error(request, "Your candidate profile is not set up. Please contact the administrator.")
-        return redirect('test_list')
 
     # Reuse an in-progress attempt if one exists, else create a new one
     attempt = TestAttempt.objects.filter(
