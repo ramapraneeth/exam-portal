@@ -87,12 +87,13 @@ DATABASES = {
 }
 
 if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=0,          # Set this to 0 for Render Free Tier stability
-        conn_health_checks=True,
-        ssl_require=True
-    )
-
+    # Parse the URL cleanly first
+    DATABASES['default'] = dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    
+    # Directly inject the performance stability overrides into the parsed dictionary
+    DATABASES['default']['CONN_MAX_AGE'] = 0
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
+    
 #added code ---------------------------------------------------------------------------------------------------------------------
 
 # Password validation
