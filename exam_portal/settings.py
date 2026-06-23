@@ -23,7 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
     'django.contrib.staticfiles',
+
     'exams',  # our exam portal app
 ]
 
@@ -61,38 +63,12 @@ WSGI_APPLICATION = 'exam_portal.wsgi.application'
 # Database
 # Using SQLite for easy local development.
 # For production, swap this for PostgreSQL (see README for instructions).
-
-#this is the code changed???????????????????????????????????????????????????????????????????????????????????????????????????
-#uncomment this below code so that it gets normal again
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': '/data/db.sqlite3' if os.environ.get('RAILWAY_ENVIRONMENT') else BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# Uncomment this above code so that it becomes normal again?????????????????????????????????????????????????????????????????????
-
-# added code ---------------------------------------------------------------------------------------------------------------------
-
-import dj_database_url
-import os
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': '/data/db.sqlite3' if os.environ.get('RAILWAY_ENVIRONMENT') else BASE_DIR / 'db.sqlite3',
     }
 }
-
-if os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=0
-    )
-    
-#added code ---------------------------------------------------------------------------------------------------------------------
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -110,6 +86,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
 
 STORAGES = {
     "default": {
